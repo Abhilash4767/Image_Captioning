@@ -31,7 +31,7 @@ if 'chat_history' not in st.session_state:
 # ----------------------------
 def configure_api_key(api_key):
     try:
-        genai.configure(api_key="YOUR_API_KEY")
+        genai.configure(api_key="AIzaSyBnAaLR4n579DzmiHz-Rk6ohBHQ25oaz6A")
         st.session_state['api_key'] = api_key
         st.success("✅ API Key configured successfully!")
     except Exception as e:
@@ -188,23 +188,24 @@ elif page == "ChatBot":
 elif page == "Image Captioning":
     st.subheader("🖼️ Generate Image Caption with Hashtags")
     uploaded_file = st.file_uploader("Upload an image", type=["jpg", "png", "jpeg"])
+    
     if uploaded_file is not None and st.button("Generate Caption"):
+        img = Image.open(uploaded_file)
         try:
             if st.session_state['api_key']:
                 genai.configure(api_key=st.session_state['api_key'])
                 model = genai.GenerativeModel("gemini-1.5-pro")
-img = Image.open("uploaded.jpg")
-
+                
                 caption = model.generate_content([
-    "Generate a detailed caption in English describing this image.",
-    img
-])
-
+                    "Generate a detailed caption in English describing this image.",
+                    img
+                ])
+                
                 tags = model.generate_content([
                     "Generate 10 trending hashtags relevant to this image in one line in English.",
                     img
                 ])
-
+                
                 st.image(img, caption=f"Caption: {caption.text}")
                 st.write(f"**Tags:** {tags.text}")
             else:
