@@ -195,17 +195,22 @@ elif page == "Image Captioning":
         try:
             if st.session_state['api_key']:
                 genai.configure(api_key=st.session_state['api_key'])
-                model = genai.GenerativeModel("gemini-1.5-pro")
-                
-                caption = model.generate_content([
-                    "Generate a detailed caption in English describing this image.",
-                    img
-                ])
-                
-                tags = model.generate_content([
-                    "Generate 10 trending hashtags relevant to this image in one line in English.",
-                    img
-                ])
+                model = genai.GenerativeModel("gemini-1.5-flash")
+
+caption = model.generate_content(
+    [
+        {"text": "Generate a detailed caption in English describing this image."},
+        img
+    ]
+)
+
+tags = model.generate_content(
+    [
+        {"text": "Generate 10 trending hashtags relevant to this image in one line in English."},
+        img
+    ]
+)
+
                 
                 st.image(img, caption=f"Caption: {caption.text}")
                 st.write(f"**Tags:** {tags.text}")
@@ -213,3 +218,4 @@ elif page == "Image Captioning":
                 st.error("❌ Please configure your API key first.")
         except Exception as e:
             st.error(f"Failed to generate caption due to: {str(e)}")
+
