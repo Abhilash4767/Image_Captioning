@@ -8,18 +8,12 @@
         "ms-python.python",
         "ms-python.vscode-pylance"
       ]
-    },
-    "codespaces": {
-      "openFiles": [
-        "README.md",
-        "aio.py"
-      ]
     }
   },
 
-  "updateContentCommand": "sudo apt-get update && sudo apt-get upgrade -y && if [ -f packages.txt ]; then sudo xargs apt-get install -y < packages.txt; fi && pip install --upgrade pip && if [ -f requirements.txt ]; then pip install -r requirements.txt; fi && pip install streamlit google-generativeai langchain langchain-google-genai pillow PyPDF2 youtube-transcript-api faiss-cpu && echo '✅ Packages installed and requirements met'",
+  "updateContentCommand": "sudo apt-get update && pip install --upgrade pip && if [ -f requirements.txt ]; then pip install -r requirements.txt; fi",
 
-  "postAttachCommand": "streamlit run aio.py --server.enableCORS false --server.enableXsrfProtection false",
+  "postAttachCommand": "streamlit run app.py --server.port=8501 --server.enableCORS false --server.enableXsrfProtection false",
 
   "portsAttributes": {
     "8501": {
@@ -31,6 +25,6 @@
   "forwardPorts": [8501],
 
   "remoteEnv": {
-    "GOOGLE_API_KEY": "YOUR_API_KEY_HERE"
+    "GOOGLE_API_KEY": "${localEnv:GOOGLE_API_KEY}"
   }
 }
